@@ -1,4 +1,7 @@
+import DAO.RoleDAO;
+import DAO.RoleDAOImpl;
 import DAO.UsersDAO;
+import DAO.UsersDAOImpl;
 import pojo.Role;
 import pojo.Users;
 
@@ -13,12 +16,17 @@ public class UserDataBase {
     public static void main(String[] args) {
         System.out.println("==============DataBase============");
 
+        UsersDAO usersDAO = new UsersDAOImpl();
+        RoleDAO roleDAO = new RoleDAOImpl();
+
         while (true) {
             try {
                 printMenu();
                 int i = scanner.nextInt();
                 if (i == 1) {
-                    createUsersPole();
+                    Users users = createUsersPole();
+                    usersDAO.createUsers(users);
+
                 } else if (i == 2) {
                     Collection<Users> usersRole = getAllUsersRole();
                 } else if (i == 3) {
@@ -51,9 +59,9 @@ public class UserDataBase {
 
     }
 
-    //    1 Добавлять нового пользователя с ролями в БД;
+    //* 1 Добавлять нового пользователя с ролями в БД; */
 
-    private static void createUsersPole() {
+    private static Users createUsersPole() {
         System.out.println("+===СОздать пользователя===+\n");
 
         System.out.println("Имя пльзователя\n");
@@ -72,36 +80,37 @@ public class UserDataBase {
             i++;
         }
         RoleType roleType = RoleType.valueOf(Integer.valueOf(scanner.nextLine()));
-        Users users = new Users(name,login,password, roleType.ordinal());
-        System.out.println(name+""+login+""+password);
+        Users users = new Users(name, login, password, roleType.ordinal());
+        return users;
+//        System.out.println(name+""+login+""+password);
+
     }
 
 
-    //    2 Получать конкретного пользователя (с его ролями) из БД;
+    //* 2 Получать конкретного пользователя (с его ролями) из БД; */
     private static Collection<Users> getAllUsersRole() {
         return null;
     }
-//    3 Получать список пользователей по конкретной роли;
+    //* 3 Получать список пользователей по конкретной роли; */
 
     private static Collection<Users> getUsersRole() {
         return null;
     }
 
-    //    4 Удалять пользователя в БД;
+    //* 4 Удалять пользователя в БД; */
     private static void deleteUsersPole(int id) {
 
     }
 
-    //    5 Получать список пользователей из БД (без ролей);
+    //* 5 Получать список пользователей из БД (без ролей); */
     private static Collection<Users> getAllUsersNoRole() {
         return null;
     }
-    //    6 Редактировать существующего пользователя в БД.
 
+    //* 6 Редактировать существующего пользователя в БД. */
     private static void updateUsersPole() {
 
     }
-
 }
 
 
