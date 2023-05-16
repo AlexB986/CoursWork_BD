@@ -9,7 +9,7 @@ import java.util.Objects;
 public class Users {
     @Id()
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long usersId;
+    private Integer usersId;
 
     @Column(name = "name")
     private String name;
@@ -20,7 +20,7 @@ public class Users {
     @Column(name =" user_role")
     private Integer userRole;
     @Column(name = "dt_creation")
-    private LocalDateTime dateTimeCreate;
+    private  LocalDateTime dateTimeCreate;
 
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Role role;
@@ -34,14 +34,21 @@ public class Users {
         this.dateTimeCreate = LocalDateTime.now();
 
     }
-    public Users(String name,String login,String password,Integer userRole ){
+    public Users(String name,String login,String password,Integer userRole){
         this.name = name;
         this.login = login;
         this.password = password;
         this.userRole = userRole;
-
         this.dateTimeCreate = LocalDateTime.now();
 
+    }
+    public Users(Integer usersId, String name,String login,String password,Integer userRole){
+        this.usersId = usersId;
+        this.name = name;
+        this.login = login;
+        this.password = password;
+        this.userRole = userRole;
+        this.dateTimeCreate = LocalDateTime.now();
     }
     public String getName() {
         return this.name;

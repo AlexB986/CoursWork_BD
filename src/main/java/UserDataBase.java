@@ -5,9 +5,7 @@ import DAO.UsersDAOImpl;
 import pojo.Role;
 import pojo.Users;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class UserDataBase {
     private static Scanner scanner = new Scanner(System.in);
@@ -16,28 +14,37 @@ public class UserDataBase {
     public static void main(String[] args) {
         System.out.println("==============DataBase============");
 
+        Users users = new Users();
+        Role role = new Role();
+
         UsersDAO usersDAO = new UsersDAOImpl();
         RoleDAO roleDAO = new RoleDAOImpl();
 
         while (true) {
             try {
                 printMenu();
-                int i = scanner.nextInt();
-                if (i == 1) {
-                    Users users = createUsersPole();
+                int choiceMenu = Integer.parseInt(scanner.nextLine());
+                if (choiceMenu == 1) {
+                    users = createUsersPole(scanner);
                     usersDAO.createUsers(users);
+                } else if (choiceMenu == 2) {
+                    System.out.println("Введите id");
+                    int choiceId = scanner.nextInt();
+                    Users usersRole = getAllUsersRole(usersDAO, choiceId);
 
-                } else if (i == 2) {
-                    Collection<Users> usersRole = getAllUsersRole();
-                } else if (i == 3) {
-                    Collection<Users> usersRole = getUsersRole();
-                } else if (i == 4) {
+                } else if (choiceMenu == 3) {
+                    System.out.println("Выбор роли");
+                    Collection<Role> usersRole = getUsersRole(roleDAO, choicesRole());
+
+                } else if (choiceMenu == 4) {
+                    System.out.println("Удалить пользователя введите id");
                     int idUsers = scanner.nextInt();
-                    deleteUsersPole(idUsers);
-                } else if (i == 5) {
+                    deleteUsersUser(usersDAO, users, idUsers);
+                } else if (choiceMenu == 5) {
                     Collection<Users> usersNoRole = getAllUsersNoRole();
-                } else if (i == 6) {
-                    updateUsersPole();
+                } else if (choiceMenu == 6) {
+                    System.out.println("Обновить пользователя");
+                    updateUsersPole(usersDAO, scanner);
                 }
 
             } catch (Exception e) {
@@ -61,44 +68,52 @@ public class UserDataBase {
 
     //* 1 Добавлять нового пользователя с ролями в БД; */
 
-    private static Users createUsersPole() {
-        System.out.println("+===СОздать пользователя===+\n");
+    private static Users createUsersPole(Scanner scanner) {
+        System.out.print("+===СОздать пользователя===+\n");
 
         System.out.println("Имя пльзователя\n");
         String name = scanner.nextLine();
 
         System.out.println("Login пльзователя\n");
-        String login = scanner.toString();
+        String login = scanner.nextLine();
 
         System.out.println("Password пльзователя\n");
-        String password = scanner.toString();
+        String password = scanner.nextLine();
 
-        System.out.println("Роль пльзователя\n");
-        int i = 1;
-        for (RoleType element : RoleType.values()) {
-            System.out.println(element.getRoleType());
-            i++;
-        }
-        RoleType roleType = RoleType.valueOf(Integer.valueOf(scanner.nextLine()));
-        Users users = new Users(name, login, password, roleType.ordinal());
+//        System.out.println("Роль пльзователя\n");
+//
+//        int i = 1;
+//        for (RoleType element : RoleType.values()) {
+//            System.out.println(element.getRoleType());
+//            i++;
+//        }
+//        RoleType roleType = RoleType.valueOf(Integer.valueOf(scanner.nextLine()));
+//        Users users = new Users(name, login, password, roleType.ordinal());
+        Users users = new Users(name, login, password, choicesRole());
+
         return users;
-//        System.out.println(name+""+login+""+password);
 
     }
 
 
     //* 2 Получать конкретного пользователя (с его ролями) из БД; */
-    private static Collection<Users> getAllUsersRole() {
-        return null;
+    private static Users getAllUsersRole(UsersDAO usersDAO, int id) {
+        return usersDAO.getUsersById(id);
+
     }
     //* 3 Получать список пользователей по конкретной роли; */
 
-    private static Collection<Users> getUsersRole() {
-        return null;
+    private static Collection<Role> getUsersRole(RoleDAO roleDAO, int choiceRole) {
+        Collection<Role> roleCollection = Arrays.asList(
+                roleDAO.getRoleById(choiceRole)
+        );
+
+        return roleCollection;
     }
 
     //* 4 Удалять пользователя в БД; */
-    private static void deleteUsersPole(int id) {
+    private static void deleteUsersUser(UsersDAO usersDAO, Users users, int id) {
+        usersDAO.deleteUsers(id, users);
 
     }
 
@@ -108,9 +123,37 @@ public class UserDataBase {
     }
 
     //* 6 Редактировать существующего пользователя в БД. */
-    private static void updateUsersPole() {
+    private static void updateUsersPole(UsersDAO usersDAO, Scanner scanner) {
+        System.out.println("Id пользователя");
+        int idUser = scanner.nextInt();
+
+        System.out.println("Имя пльзователя\n");
+        String name = scanner.nextLine();
+
+        System.out.println("Login пльзователя\n");
+        String login = scanner.nextLine();
+
+        System.out.println("Password пльзователя\n");
+        String password = scanner.nextLine();
+
+        usersDAO.updateUsers(new Users(idUser,name,login,password,choicesRole()));
 
     }
+
+    private static int choicesRole() {
+        System.out.println("Роль пльзователя\n");
+
+        int i = 1;
+        for (RoleType element : RoleType.values()) {
+            System.out.println(element.getRoleType());
+            i++;
+        }
+        RoleType roleType = RoleType.valueOf(Integer.valueOf(scanner.nextLine()));
+        return roleType.ordinal();
+    }
+
+
+//    https://github.com/AlexB986/CoursWork_BD/pull/1
 }
 
 
