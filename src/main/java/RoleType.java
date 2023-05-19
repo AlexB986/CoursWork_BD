@@ -1,10 +1,10 @@
 public enum RoleType {
-    DEVELOPER("1-Разработчик"),
-    ANALIST("2-Аналитик"),
-    TESTER("3-Тестировщик"),
-    MANAGER("4-Менеджер"),
-    DESIGNER("5-Дизайнер"),
-    DEFAULT("6-По умолчанию");
+    DEVELOPER("Разработчик"),
+    ANALIST("Аналитик"),
+    TESTER("Тестировщик"),
+    MANAGER("Менеджер"),
+    DESIGNER("Дизайнер"),
+    DEFAULT(null);
 
     private String roleType;
 

@@ -1,5 +1,7 @@
 package pojo;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,10 +11,11 @@ import java.util.List;
 public class Role {
     @Id()
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer roleId;
+    private Integer role_Id;
     @Column(name = "role")
     private String role;
     @Column(name = "dt_update")
+    @CreationTimestamp
     private LocalDateTime dateTimeUpdate;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -20,7 +23,10 @@ public class Role {
 
     public Role() {
         this.role = role;
-        this.dateTimeUpdate = LocalDateTime.now();
+//        this.dateTimeUpdate = LocalDateTime.now();
+    }
+    public Role(String role){
+        this.role = role;
     }
 
     public String getRole() {
@@ -38,7 +44,7 @@ public class Role {
     @Override
     public String toString() {
         return "Role{" +
-                "roleId=" + roleId +
+                "role_Id=" + role_Id +
                 ", role='" + role + '\'' +
                 ", dateTimeUpdate=" + dateTimeUpdate +
                 ", usersList=" + usersList +

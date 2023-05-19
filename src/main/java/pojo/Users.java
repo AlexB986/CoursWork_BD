@@ -1,7 +1,11 @@
 package pojo;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -17,12 +21,13 @@ public class Users {
     private String login;
     @Column(name = "password")
     private String password;
-    @Column(name =" user_role")
+    @Column(name = " user_role")
     private Integer userRole;
     @Column(name = "dt_creation")
-    private  LocalDateTime dateTimeCreate;
+    @CreationTimestamp
+    private LocalDateTime localDateTime;
 
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Role role;
 
 
@@ -31,25 +36,31 @@ public class Users {
         this.login = login;
         this.password = password;
         this.userRole = userRole;
-        this.dateTimeCreate = LocalDateTime.now();
-
+//        this.dateTimeCreate = LocalDateTime.now();
+//        this.localTime = localTime;
     }
-    public Users(String name,String login,String password,Integer userRole){
+
+    public Users(String name, String login, String password, Integer userRole,Role role) {
         this.name = name;
         this.login = login;
         this.password = password;
         this.userRole = userRole;
-        this.dateTimeCreate = LocalDateTime.now();
+        this.role= role;
+//        this.dateTimeCreate = LocalDateTime.now();
+//        this.localTime = localTime;
 
     }
-    public Users(Integer usersId, String name,String login,String password,Integer userRole){
+
+    public Users(Integer usersId, String name, String login, String password, Integer userRole) {
         this.usersId = usersId;
         this.name = name;
         this.login = login;
         this.password = password;
         this.userRole = userRole;
-        this.dateTimeCreate = LocalDateTime.now();
+//        this.dateTimeCreate = LocalDateTime.now();
+//        this.localTime = localTime;
     }
+
     public String getName() {
         return this.name;
     }
@@ -73,9 +84,7 @@ public class Users {
     public void setPassword(String password) {
         this.password = password;
     }
-    public LocalDateTime getDateTimeCreate(){
-        return dateTimeCreate;
-    }
+
 
     @Override
     public String toString() {
@@ -84,7 +93,6 @@ public class Users {
                 ", name='" + name + '\'' +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
-                ", dateTimeCreate=" + dateTimeCreate +
                 ", role=" + role +
                 '}';
     }

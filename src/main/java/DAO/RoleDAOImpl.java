@@ -49,7 +49,7 @@ public class RoleDAOImpl implements RoleDAO {
         EntityManager entityManager = startEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
-        role = startEntityManager().find(Role.class,id);
+        role = entityManager.find(Role.class,id);
         entityManager.remove(role);
         entityManager.getTransaction().commit();
         entityManager.close();
