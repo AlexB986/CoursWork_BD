@@ -4,7 +4,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "role")
@@ -18,15 +19,24 @@ public class Role {
     @CreationTimestamp
     private LocalDateTime dateTimeUpdate;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Users> usersList;
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "user_role",
+            joinColumns = {@JoinColumn(name = "role_id")},
+            inverseJoinColumns = {@JoinColumn(name = "users_Id")}
+    )
+    Set<Users> usersHashSet = new HashSet<>();
 
     public Role() {
         this.role = role;
-//        this.dateTimeUpdate = LocalDateTime.now();
     }
-    public Role(String role){
+
+
+    public Role(String role) {
         this.role = role;
+    }
+
+    public Role(Set<Users> usersHashSet) {
+        this.usersHashSet = usersHashSet;
     }
 
     public String getRole() {
@@ -47,7 +57,7 @@ public class Role {
                 "role_Id=" + role_Id +
                 ", role='" + role + '\'' +
                 ", dateTimeUpdate=" + dateTimeUpdate +
-                ", usersList=" + usersList +
+                ", usersHashSet=" + usersHashSet +
                 '}';
     }
 }

@@ -4,19 +4,29 @@ import pojo.Role;
 import pojo.Users;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 public class UsersDAOImpl implements UsersDAO {
 
     private final String user = "postgres";
     private final String password = "frostasecs1688";
     private final String url = "jdbc:postgresql://localhost:5432/postgres";
-
-    public Collection<Users> getUsersByRole(Role role) {
+    @Override
+    public Collection<?> getUsersByRole(Integer idRole) {
         EntityManager entityManager = startEntityManager();
-        Users users = entityManager.find(Users.class,role);
-        Query query = entityManager.createNativeQuery("SELECT *FROM users",Role.class);
-        return query.getResultList();
+        Query query = entityManager.createNativeQuery("SELECT * FROM users  WHERE user_role IN (?1)",Users.class).setParameter(1,idRole);
+        Collection<Users> usersCollection = query.getResultList();
+        return usersCollection;
+    }
+
+    @Override
+    public Collection<?> getAllUsersNoRole() {
+        EntityManager entityManager = startEntityManager();
+        Query query = entityManager.createNativeQuery("SELECT * FROM  users WHERE user_role = 6 ",Users.class);
+        Collection<Users>usersCollection = query.getResultList();
+        return usersCollection;
     }
 
     @Override

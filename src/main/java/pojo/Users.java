@@ -4,16 +4,14 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Date;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
 public class Users {
     @Id()
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer usersId;
+    private Integer users_Id;
 
     @Column(name = "name")
     private String name;
@@ -21,44 +19,43 @@ public class Users {
     private String login;
     @Column(name = "password")
     private String password;
-    @Column(name = " user_role")
+    @Column(name = "user_role")
     private Integer userRole;
     @Column(name = "dt_creation")
     @CreationTimestamp
     private LocalDateTime localDateTime;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Role role;
-
+    @ManyToMany()
+    private  Set<Role>roleSet = new HashSet<>();
 
     public Users() {
         this.name = name;
         this.login = login;
         this.password = password;
         this.userRole = userRole;
-//        this.dateTimeCreate = LocalDateTime.now();
-//        this.localTime = localTime;
+        this.roleSet = roleSet;
     }
 
-    public Users(String name, String login, String password, Integer userRole,Role role) {
+
+
+    public Users(String name, String login, String password, Integer userRole) {
         this.name = name;
         this.login = login;
         this.password = password;
         this.userRole = userRole;
-        this.role= role;
-//        this.dateTimeCreate = LocalDateTime.now();
-//        this.localTime = localTime;
+        this.roleSet = roleSet;
 
     }
 
-    public Users(Integer usersId, String name, String login, String password, Integer userRole) {
-        this.usersId = usersId;
+
+    public Users(Integer users_Id, String name, String login, String password, Integer userRole) {
+        this.users_Id = users_Id;
         this.name = name;
         this.login = login;
         this.password = password;
         this.userRole = userRole;
-//        this.dateTimeCreate = LocalDateTime.now();
-//        this.localTime = localTime;
+        this.roleSet = roleSet;
+
     }
 
     public String getName() {
@@ -89,11 +86,13 @@ public class Users {
     @Override
     public String toString() {
         return "Users{" +
-                "usersId=" + usersId +
+                "users_Id=" + users_Id +
                 ", name='" + name + '\'' +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
-                ", role=" + role +
+                ", userRole=" + userRole +
+                ", localDateTime=" + localDateTime +
+                ", roleSet=" + roleSet +
                 '}';
     }
 }

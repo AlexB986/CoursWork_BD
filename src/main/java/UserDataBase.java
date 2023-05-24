@@ -5,7 +5,6 @@ import DAO.UsersDAOImpl;
 import pojo.Role;
 import pojo.Users;
 
-import javax.persistence.EntityManager;
 import java.util.*;
 
 public class UserDataBase {
@@ -34,7 +33,7 @@ public class UserDataBase {
                     System.out.println(usersRole.toString());
                 } else if (choiceMenu == 3) {
                     System.out.println("Выбор роли");
-                    Collection<?> usersRole = getUsersRole(roleDAO, choicesRole());
+                    Collection<?> usersRole = getUsersRole(usersDAO, choicesRole());
                     System.out.println(usersRole);
 
                 } else if (choiceMenu == 4) {
@@ -43,10 +42,14 @@ public class UserDataBase {
                     deleteUsersUser(usersDAO, users, idUsers);
                 } else if (choiceMenu == 5) {
                     System.out.println(" Получить пользователей без ролей");
-                    Collection<?> usersNoRole = getAllUsersNoRole();
+                    Collection<?> usersNoRole = getAllUserNoRole(usersDAO);
+                    System.out.println(usersNoRole);
                 } else if (choiceMenu == 6) {
                     System.out.println("Обновить пользователя");
                     updateUsersPole(usersDAO, scanner);
+                } else if (choiceMenu == 7) {
+                    System.out.println("Создать роли");
+                    createRoles(roleDAO, role);
                 }
 
             } catch (Exception e) {
@@ -65,6 +68,7 @@ public class UserDataBase {
         System.out.println("4 - Удалять пользователя в БД;");
         System.out.println("5 - Получать список пользователей из БД (без ролей);");
         System.out.println("6 - Редактировать существующего пользователя в БД.");
+        System.out.println("7 - Создать роли.");
 
     }
 
@@ -88,9 +92,10 @@ public class UserDataBase {
         for (RoleType element : RoleType.values()) {
             System.out.println(i + " " + element.getRoleType());
             i++;
+
         }
         RoleType roleType = RoleType.valueOf(scanner.nextInt());
-        users = new Users(name, login, password, roleType.ordinal() + 1, new Role(roleType.getValue()));
+        users = new Users(name, login, password, roleType.ordinal() + 1);
         usersDAO.createUsers(users);
 
     }
@@ -104,11 +109,9 @@ public class UserDataBase {
     }
     //* 3 Получать список пользователей по конкретной роли; */
 
-    private static Collection<?> getUsersRole( RoleDAO roleDAO, int choiceRole) {
-        Collection<?> roleCollection = Arrays.asList(
-                roleDAO.getRoleById(choiceRole + 1)
-        );
-        return roleCollection;
+    private static Collection<?> getUsersRole(UsersDAO usersDAO, int choiceRole) {
+
+        return usersDAO.getUsersByRole(choiceRole+1);
     }
 
     //    * 4 Удалять пользователя в БД; */
@@ -118,9 +121,8 @@ public class UserDataBase {
     }
 
     //* 5 Получать список пользователей из БД (без ролей); */
-    private static Collection<?> getAllUsersNoRole() {
-
-        return null;
+    private static Collection<?> getAllUserNoRole(UsersDAO usersDAO) {
+        return usersDAO.getAllUsersNoRole();
     }
 
     //* 6 Редактировать существующего пользователя в БД. */
@@ -152,6 +154,17 @@ public class UserDataBase {
         }
         RoleType roleType = RoleType.valueOf(Integer.valueOf(scanner.nextLine()));
         return roleType.ordinal();
+    }
+
+    private static void createRoles(RoleDAO roleDAO, Role role) {
+        int i = 1;
+        for (RoleType element : RoleType.values()) {
+            role = new Role(element.getValue());
+            roleDAO.createRole(role);
+            System.out.println(i + " " + element.getRoleType());
+            i++;
+
+        }
     }
 
 

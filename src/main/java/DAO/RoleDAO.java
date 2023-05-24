@@ -1,7 +1,6 @@
 package DAO;
 
 import pojo.Role;
-import pojo.Users;
 
 import java.util.Collection;
 
