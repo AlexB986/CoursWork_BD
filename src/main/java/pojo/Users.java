@@ -28,9 +28,7 @@ public class Users {
     @ManyToMany()
     private  Set<Role>roleSet = new HashSet<>();
 
-    public Users() {
-
-    }
+    public Users() {  }
 
 
 
