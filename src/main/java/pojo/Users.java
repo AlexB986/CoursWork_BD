@@ -29,11 +29,7 @@ public class Users {
     private  Set<Role>roleSet = new HashSet<>();
 
     public Users() {
-        this.name = name;
-        this.login = login;
-        this.password = password;
-        this.userRole = userRole;
-        this.roleSet = roleSet;
+
     }
 
 
@@ -82,6 +78,17 @@ public class Users {
         this.password = password;
     }
 
+    public Integer getUsers_Id() {
+        return users_Id;
+    }
+
+    public Set<Role> getRoleSet() {
+        return roleSet;
+    }
+
+    public void setRoleSet(Set<Role> roleSet) {
+        this.roleSet = roleSet;
+    }
 
     @Override
     public String toString() {
